@@ -31,3 +31,7 @@ npm run start
 The registration form submits through `app/api/register/route.ts`, which forwards valid requests to the PWI Google Apps Script endpoint from the server.
 
 To activate it, add the deployed Apps Script `/exec` URL to `GOOGLE_APPS_SCRIPT_WEB_APP_URL` in `.env.local` locally and in your production host’s encrypted environment variables. The script appends each registration to the `Registrations` sheet tab. Keep the form’s required-field validation and honeypot enabled.
+
+## Contact form
+
+The Contact form uses the same Apps Script endpoint to send enquiry notifications to `Promisewesleyinitiative@gmail.com`. The script sends the notification from the Google account that deployed it and sets the visitor's address as Reply-To.

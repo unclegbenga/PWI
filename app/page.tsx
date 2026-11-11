@@ -12,6 +12,7 @@ const TIMING = Object.freeze({
 export default function Home() {
   const [stage, setStage] = useState(0);
   const [formMessage, setFormMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     const root = document.body;
@@ -38,7 +39,7 @@ export default function Home() {
     document.body.dataset.stage = String(stage);
   }, [stage]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
 
@@ -48,9 +49,32 @@ export default function Home() {
       return;
     }
 
-    setFormMessage(
-      "Draft form ready — contact routing will be connected once PWI details are confirmed.",
-    );
+    const formData = new FormData(form);
+    setIsSending(true);
+    setFormMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(formData.get("name") ?? ""),
+          email: String(formData.get("email") ?? ""),
+          interest: String(formData.get("interest") ?? ""),
+          message: String(formData.get("message") ?? ""),
+          company: String(formData.get("company") ?? ""),
+        }),
+      });
+      const result = await response.json() as { ok?: boolean; message?: string };
+      if (!response.ok || !result.ok) throw new Error(result.message || "We could not send your enquiry. Please try again.");
+
+      form.reset();
+      setFormMessage("Thank you — your enquiry has been sent to PWI. We will get back to you soon.");
+    } catch (error) {
+      setFormMessage(error instanceof Error ? error.message : "We could not send your enquiry. Please try again.");
+    } finally {
+      setIsSending(false);
+    }
   }
 
   return (
@@ -136,8 +160,8 @@ export default function Home() {
               <h2>A place for ambition to become practical progress.</h2>
             </div>
             <div className="about-copy">
-              <p className="lead">PWI is building a youth-development community for people navigating education, work, leadership, and the choices that shape their futures.</p>
-              <p>We believe potential is everywhere. Access, encouragement, and consistent action are what help it grow. Our role is to make the next move clearer—and more possible.</p>
+              <p className="lead">Promise Wesley Initiatives (PWI) is a youth development community for people navigating education, work, leadership, life, and the choices that shape their futures.</p>
+              <p>We believe potential is everywhere. With access, knowledge, guidance, and consistent action, young people can turn their aspirations into meaningful progress.</p>
               <a className="text-link" href="#building">How PWI is building this <span aria-hidden="true">→</span></a>
               <aside className="belief"><span>Our belief</span><q>Potential is everywhere.</q></aside>
             </div>
@@ -146,6 +170,33 @@ export default function Home() {
             <article><span>01</span><h3>Purpose</h3><p>Growth is strongest when it has direction and meaning.</p></article>
             <article><span>02</span><h3>Possibility</h3><p>A starting point does not define what someone can build.</p></article>
             <article><span>03</span><h3>Community</h3><p>Progress grows through connection, generosity, and contribution.</p></article>
+          </div>
+        </section>
+
+        <section id="mission" className="section mission" aria-labelledby="mission-heading">
+          <div className="container mission-grid">
+            <p className="eyebrow eyebrow-dark"><span></span> Our mission</p>
+            <h2 id="mission-heading">Our mission is to make the journey of growth clearer, the opportunities more accessible, and the next steps more achievable.</h2>
+          </div>
+          <div className="container mission-detail">
+            <p className="mission-intro">PWI exists for young people who are finding their direction, building useful skills, preparing for work, stepping into leadership, or simply looking for a community that helps them move forward.</p>
+            <div className="mission-pillars" aria-label="How PWI pursues its mission">
+              <article>
+                <span>01</span>
+                <h3>Clearer direction</h3>
+                <p>Useful information, practical learning, and honest conversations that help young people understand their options and make informed choices.</p>
+              </article>
+              <article>
+                <span>02</span>
+                <h3>Greater access</h3>
+                <p>More visible pathways to mentors, networks, experiences, and opportunities that can make the next step feel within reach.</p>
+              </article>
+              <article>
+                <span>03</span>
+                <h3>Progress through action</h3>
+                <p>Encouragement to take meaningful steps—learning, applying, building, leading, and contributing—one practical move at a time.</p>
+              </article>
+            </div>
           </div>
         </section>
 
@@ -172,6 +223,7 @@ export default function Home() {
           <div className="container contact-grid">
             <div className="contact-intro"><p className="eyebrow"><span></span> 04 / Contact</p><h2>Let’s make the next step visible.</h2><p>Tell us how you would like to connect. Contact routing and direct details will be added when confirmed.</p><div className="contact-note"><span aria-hidden="true">✦</span> Contact details coming soon</div></div>
             <form className="contact-form" onSubmit={handleSubmit} noValidate>
+              <input className="form-honeypot" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" />
               <div className="form-row">
                 <div className="field"><label htmlFor="name">Your name <b>*</b></label><input id="name" name="name" autoComplete="name" required placeholder="Your name" /></div>
                 <div className="field"><label htmlFor="email">Email address <b>*</b></label><input id="email" name="email" type="email" autoComplete="email" spellCheck={false} required placeholder="you@example.com" /></div>
@@ -179,7 +231,7 @@ export default function Home() {
               <div className="field"><label htmlFor="interest">I&apos;m reaching out as <b>*</b></label><select id="interest" name="interest" required defaultValue=""><option value="" disabled>Choose one</option><option>Young person</option><option>Mentor or volunteer</option><option>Partner or supporter</option><option>General enquiry</option></select></div>
               <div className="field"><label htmlFor="message">Your message <b>*</b></label><textarea id="message" name="message" required rows={4} placeholder="How would you like to connect?"></textarea></div>
               <p className="form-message" role="status" aria-live="polite">{formMessage}</p>
-              <button className="button button-gold" type="submit">Send enquiry <span aria-hidden="true">→</span></button>
+              <button className="button button-gold" type="submit" disabled={isSending}>{isSending ? "Sending…" : "Send enquiry"} <span aria-hidden="true">→</span></button>
             </form>
           </div>
         </section>

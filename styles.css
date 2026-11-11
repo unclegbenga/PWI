@@ -99,6 +99,18 @@ h2 { margin: 0; font-size: clamp(36px, 4.6vw, 64px); font-weight: 600; }
 .principle-grid h3 { margin: 34px 0 11px; font-size: 24px; }
 .principle-grid p { max-width: 260px; margin-bottom: 0; color: #5f5a53; font-size: 14px; }
 
+.mission { padding: 104px 0; background: var(--mist); }
+.mission-grid { display: grid; grid-template-columns: .36fr .64fr; gap: 10%; align-items: start; }
+.mission-grid .eyebrow { margin-top: 10px; }
+.mission-grid h2 { max-width: 760px; font-size: clamp(38px, 4.6vw, 64px); }
+.mission-detail { display: grid; grid-template-columns: .36fr .64fr; gap: 10%; margin-top: 76px; padding-top: 25px; border-top: 1px solid var(--line); }
+.mission-intro { max-width: 340px; margin: 0; color: #57534d; font-size: 16px; line-height: 1.6; }
+.mission-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.mission-pillars article { padding-right: 16px; }
+.mission-pillars span { color: var(--gold-dark); font-family: var(--display); font-size: 12px; font-weight: 600; }
+.mission-pillars h3 { margin: 22px 0 10px; font-size: 20px; }
+.mission-pillars p { margin: 0; color: #5f5a53; font-size: 14px; line-height: 1.55; }
+
 .building { color: var(--white); background: var(--ink); }
 .building-header { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; }
 .building-header h2 { font-size: clamp(43px, 5.6vw, 74px); }
@@ -203,7 +215,7 @@ body[data-stage="1"] .entrance-nav { opacity: 1; transform: translateY(0); }
   .mobile-menu-panel a { padding: 13px 11px; color: var(--white); font-size: 14px; }
   .mobile-menu-panel a:nth-last-child(2) { margin-top: 4px; color: var(--gold); border-top: 1px solid rgba(255,255,255,.18); }
   .hero { min-height: auto; padding: 132px 0 28px; }
-  .hero-grid, .section-grid, .building-header, .contact-grid { grid-template-columns: 1fr; gap: 42px; }
+  .hero-grid, .section-grid, .mission-grid, .building-header, .contact-grid { grid-template-columns: 1fr; gap: 42px; }
   .hero-grid { min-height: auto; }
   .hero-art { order: -1; min-height: 320px; }
   .logo-panel { width: 215px; }
@@ -211,6 +223,14 @@ body[data-stage="1"] .entrance-nav { opacity: 1; transform: translateY(0); }
   .hero-footnote a { display: none; }
   .section { padding: 80px 0; }.arc-feature { padding: 72px 0; }.arc-feature-intro { grid-template-columns: 1fr; gap: 18px; margin-bottom: 26px; }.arc-feature-intro > p { margin: 0; }
   .about-copy { padding-top: 0; }
+  .mission { padding: 80px 0; }
+  .mission-grid { gap: 18px; }
+  .mission-grid .eyebrow { margin-top: 0; margin-bottom: 0; }
+  .mission-detail { grid-template-columns: 1fr; gap: 36px; margin-top: 50px; }
+  .mission-intro { max-width: 490px; }
+  .mission-pillars { grid-template-columns: 1fr; gap: 27px; }
+  .mission-pillars article { padding-right: 0; }
+  .mission-pillars h3 { margin-top: 13px; }
   .principle-grid { grid-template-columns: 1fr; gap: 27px; margin-top: 60px; }
   .principle-grid h3 { margin-top: 13px; }
   .building-header { gap: 12px; }.pathway-list { margin-top: 58px; }.pathway { grid-template-columns: 34px 1fr auto; }.pathway h3 { font-size: 21px; }
