@@ -5,6 +5,10 @@ export const metadata: Metadata = {
   title: "Promise Wesley Initiative — Grow Forward",
   description:
     "Promise Wesley Initiative helps young people grow forward with purpose, skills, support, and opportunity.",
+  icons: {
+    icon: "/brand-assets/pwi-yellow-people-crown-logo.png",
+    apple: "/brand-assets/pwi-yellow-people-crown-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
