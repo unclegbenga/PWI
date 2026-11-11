@@ -42,7 +42,7 @@ export default function RegisterPage() {
       const result = await response.json() as { message?: string };
       if (!response.ok) throw new Error(result.message || "We could not save your registration.");
       form.reset();
-      setMessage("Thank you — PWI has received your registration.");
+      setMessage("Thank you. PWI has received your registration.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "We could not send your registration. Please try again or contact PWI directly.");
     } finally {

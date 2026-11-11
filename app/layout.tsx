@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../styles.css";
 
 export const metadata: Metadata = {
-  title: "Promise Wesley Initiative — Grow Forward",
+  title: "Promise Wesley Initiative: Grow Forward",
   description:
     "Promise Wesley Initiative helps young people grow forward with purpose, skills, support, and opportunity.",
   icons: {

@@ -38,5 +38,5 @@ form.addEventListener("submit", (event) => {
     message.textContent = "Please complete the required fields before sending your enquiry.";
     return;
   }
-  message.textContent = "Draft form ready — contact routing will be connected once PWI details are confirmed.";
+  message.textContent = "Draft form ready. Contact routing will be connected once PWI details are confirmed.";
 });

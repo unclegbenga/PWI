@@ -76,7 +76,7 @@ export default function Home() {
       if (!response.ok || !result.ok) throw new Error(result.message || "We could not send your enquiry. Please try again.");
 
       form.reset();
-      setFormMessage("Thank you — your enquiry has been sent to PWI. We will get back to you soon.");
+      setFormMessage("Thank you. Your enquiry has been sent to PWI. We will get back to you soon.");
     } catch (error) {
       setFormMessage(error instanceof Error ? error.message : "We could not send your enquiry. Please try again.");
     } finally {
@@ -151,11 +151,11 @@ export default function Home() {
                 <p className="eyebrow eyebrow-dark"><span></span> Featured / ARC ’27</p>
                 <h2 id="arc-heading">African Redefined Conference.</h2>
               </div>
-              <p>Looking beyond the walls—toward creativity, mindshift, discipline, and a more global perspective.</p>
+              <p>Looking beyond the walls, toward creativity, mindshift, discipline, and a more global perspective.</p>
             </div>
             <figure className="arc-poster">
-              <Image src="/events/african-redefined-conference-arc27.png" alt="African Redefined Conference ARC ’27 poster for 1.0 — Barracks Redefined, featuring the theme Looking Beyond the Walls, Think Global." width={1672} height={941} sizes="(max-width: 1180px) calc(100vw - 48px), 1180px" />
-              <figcaption><span>ARC ’27</span><span>1.0 — Barracks Redefined</span></figcaption>
+              <Image src="/events/african-redefined-conference-arc27.png" alt="African Redefined Conference ARC ’27 poster for 1.0: Barracks Redefined, featuring the theme Looking Beyond the Walls, Think Global." width={1672} height={941} sizes="(max-width: 1180px) calc(100vw - 48px), 1180px" />
+              <figcaption><span>ARC ’27</span><span>1.0: Barracks Redefined</span></figcaption>
             </figure>
           </div>
         </section>
@@ -201,7 +201,7 @@ export default function Home() {
               <article>
                 <span>03</span>
                 <h3>Progress through action</h3>
-                <p>Encouragement to take meaningful steps—learning, applying, building, leading, and contributing—one practical move at a time.</p>
+                <p>Encouragement to take meaningful steps: learning, applying, building, leading, and contributing, one practical move at a time.</p>
               </article>
             </div>
           </div>

@@ -38,7 +38,7 @@ form.addEventListener("submit", async (event) => {
       body: payload.toString(),
     });
     form.reset();
-    message.textContent = "Thank you — PWI has received your registration.";
+    message.textContent = "Thank you. PWI has received your registration.";
   } catch (error) {
     message.textContent = "We could not send your registration. Please try again or contact PWI directly.";
   } finally {
