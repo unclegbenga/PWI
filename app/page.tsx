@@ -236,7 +236,7 @@ export default function Home() {
                 <div className="field"><label htmlFor="email">Email address <b>*</b></label><input id="email" name="email" type="email" autoComplete="email" spellCheck={false} required placeholder="you@example.com" /></div>
               </div>
               <div className="field"><label htmlFor="interest">I&apos;m reaching out as <b>*</b></label><select id="interest" name="interest" required defaultValue=""><option value="" disabled>Choose one</option><option>Young person</option><option>Mentor or volunteer</option><option>Partner or supporter</option><option>General enquiry</option></select></div>
-              <div className="field"><label htmlFor="message">Your message <b>*</b></label><textarea id="message" name="message" required rows={4} placeholder="How would you like to connect?"></textarea></div>
+              <div className="field"><label htmlFor="message">Your message <b>*</b></label><textarea id="message" name="message" required rows={4} placeholder="Enter your message here"></textarea></div>
               <p className="form-message" role="status" aria-live="polite">{formMessage}</p>
               <button className="button button-gold" type="submit" disabled={isSending}>{isSending ? "Sending…" : "Send enquiry"} <ArrowRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></button>
             </form>
