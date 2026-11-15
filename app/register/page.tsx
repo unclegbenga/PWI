@@ -1,12 +1,48 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/csr/ArrowRight";
 import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/csr/ArrowUpRight";
 
 export default function RegisterPage() {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const modalRef = useRef<HTMLElement>(null);
+  const joinGroupLinkRef = useRef<HTMLAnchorElement>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+
+  function closeSuccessModal() {
+    setIsSuccessModalOpen(false);
+    window.requestAnimationFrame(() => submitButtonRef.current?.focus());
+  }
+
+  useEffect(() => {
+    if (!isSuccessModalOpen) return;
+
+    joinGroupLinkRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeSuccessModal();
+        return;
+      }
+      if (event.key !== "Tab" || !modalRef.current) return;
+
+      const focusable = Array.from(modalRef.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"));
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isSuccessModalOpen]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,7 +78,8 @@ export default function RegisterPage() {
       const result = await response.json() as { message?: string };
       if (!response.ok) throw new Error(result.message || "We could not save your registration.");
       form.reset();
-      setMessage("Thank you. PWI has received your registration.");
+      setMessage("");
+      setIsSuccessModalOpen(true);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "We could not send your registration. Please try again or contact PWI directly.");
     } finally {
@@ -59,11 +96,10 @@ export default function RegisterPage() {
           <div className="nav-links">
             <a href="/#top">Home</a><a href="/#about">About</a><a href="/#building">What we&apos;re building</a><a href="/#involved">Get involved</a>
             <a className="nav-register" href="/register" aria-current="page">Register <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
-            <a className="nav-contact" href="/#contact">Contact us <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
           </div>
           <details className="mobile-menu">
             <summary aria-label="Open navigation menu"><span></span><span></span></summary>
-            <div className="mobile-menu-panel"><a href="/#top">Home</a><a href="/#about">About</a><a href="/#building">What we&apos;re building</a><a href="/#involved">Get involved</a><a href="/register" aria-current="page">Register your interest <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a><a href="/#contact">Contact us <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a></div>
+            <div className="mobile-menu-panel"><a href="/#top">Home</a><a href="/#about">About</a><a href="/#building">What we&apos;re building</a><a href="/#involved">Get involved</a><a href="/register" aria-current="page">Register your interest <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a></div>
           </details>
         </nav>
       </header>
@@ -86,10 +122,24 @@ export default function RegisterPage() {
             <label className="consent-field" htmlFor="consent"><input id="consent" name="consent" type="checkbox" required /><span>I agree that PWI may contact me about future opportunities and updates.</span></label>
             <p className="draft-notice">Please do not add sensitive personal information. PWI will only use these details to respond about future opportunities and updates.</p>
             <p className="form-message" role="status" aria-live="polite">{message}</p>
-            <button className="button button-gold" type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>{isSubmitting ? "Sending…" : <>Register your interest <ArrowRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></>}</button>
+            <button ref={submitButtonRef} className="button button-gold" type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>{isSubmitting ? "Sending…" : <>Register your interest <ArrowRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></>}</button>
           </form>
         </div>
       </main>
+
+      {isSuccessModalOpen && (
+        <div className="registration-success-backdrop" role="presentation">
+          <section ref={modalRef} className="registration-success-modal" role="dialog" aria-modal="true" aria-labelledby="registration-success-title" aria-describedby="registration-success-description">
+            <p className="eyebrow"><span></span> Registration complete</p>
+            <h2 id="registration-success-title">Welcome to PWI.</h2>
+            <p id="registration-success-description">Your registration has been received. Join the official WhatsApp group to stay connected with the PWI community and upcoming opportunities.</p>
+            <div className="registration-success-actions">
+              <a ref={joinGroupLinkRef} className="button button-gold" href="https://chat.whatsapp.com/HDc41JALiHK9hdbebWJ3ik?s=cl&p=i&iam=2" target="_blank" rel="noreferrer" onClick={closeSuccessModal}>Join WhatsApp group <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
+              <button className="button button-outline" type="button" onClick={closeSuccessModal}>Continue to PWI</button>
+            </div>
+          </section>
+        </div>
+      )}
 
 <footer className="footer"><div className="container footer-inner"><a className="footer-brand" href="/">Promise Wesley Initiative <span>Grow Forward.</span></a><div className="footer-social" aria-label="Promise Wesley Initiative social links"><p className="footer-label">Find PWI online</p><div className="social-links"><a className="social-link" href="https://linkedin.com/company/promise-wesley-initiative" target="_blank" rel="noreferrer" aria-label="PWI on LinkedIn — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/linkedin/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">LinkedIn</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://www.facebook.com/share/1Khteg1sDc/" target="_blank" rel="noreferrer" aria-label="PWI on Facebook — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/facebook/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">Facebook</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://www.instagram.com/promisewesleyinitiative?exln=emd6NTFmcjA2NDRt" target="_blank" rel="noreferrer" aria-label="PWI on Instagram — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/instagram/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">Instagram</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://www.tiktok.com/@promise.wesley.in?_r=1&amp;_t=ZS-9AkhpwTmJIQ" target="_blank" rel="noreferrer" aria-label="PWI on TikTok — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/tiktok/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">TikTok</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://x.com/PW_Initiative" target="_blank" rel="noreferrer" aria-label="PWI on X — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/x/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">X</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://youtube.com/@promisewesleyinitiative?si=YUbobHiWBoMoceSr" target="_blank" rel="noreferrer" aria-label="PWI on YouTube — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/youtube/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">YouTube</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://wa.me/2348022712478" target="_blank" rel="noreferrer" aria-label="Message PWI on WhatsApp — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/whatsapp/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">WhatsApp</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="mailto:Promisewesleyinitiative@gmail.com"><svg className="social-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"></rect><path d="m4 7 8 6 8-6"></path></svg><span className="social-name">Email</span><span className="social-arrow" aria-hidden="true">↗</span></a></div></div><p>© {new Date().getFullYear()} PWI.</p></div></footer>
     </>

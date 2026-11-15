@@ -163,6 +163,14 @@ i.pathway-symbol { display: block; font-size: 35px; font-style: normal; line-hei
 .consent-field input { width: 18px; height: 18px; flex: 0 0 auto; margin: 1px 0 0; accent-color: var(--gold); }
 .draft-notice { margin: 0; padding: 13px 14px; border-left: 2px solid var(--gold); background: rgba(245,160,0,.1); color: rgba(255,255,255,.76); font-size: 12px; line-height: 1.55; }
 .registration-form .button { justify-self: start; }
+.button-outline { border-color: rgba(255,255,255,.42); color: var(--white); background: transparent; }
+.button-outline:hover { border-color: var(--gold); color: var(--gold); }
+.registration-success-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 24px; background: rgba(0,0,0,.78); backdrop-filter: blur(5px); }
+.registration-success-modal { width: min(100%, 560px); padding: clamp(28px, 5vw, 48px); border: 1px solid rgba(245,160,0,.58); color: var(--white); background: var(--ink); box-shadow: 0 26px 62px rgba(0,0,0,.45); }
+.registration-success-modal .eyebrow { margin-bottom: 18px; }
+.registration-success-modal h2 { margin-bottom: 18px; font-size: clamp(38px, 6vw, 58px); }
+.registration-success-modal > p:not(.eyebrow) { max-width: 44ch; margin-bottom: 28px; color: rgba(255,255,255,.76); }
+.registration-success-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
 .footer { padding: 32px 0; color: rgba(255,255,255,.6); background: var(--black); border-top: 1px solid #292929; }
 .footer-inner { display: grid; grid-template-columns: minmax(180px, .9fr) minmax(360px, 1.5fr) auto; gap: 30px; align-items: center; font-size: 11px; }
@@ -240,5 +248,6 @@ body[data-stage="1"] .entrance-nav { opacity: 1; transform: translateY(0); }
   .involved { padding: 56px 0; }.involved-card { grid-template-columns: 1fr; gap: 37px; padding: 40px 26px; }
   .contact-form { padding: 24px 18px; }.form-row { grid-template-columns: 1fr; gap: 20px; }.footer-inner { grid-template-columns: 1fr; align-items: flex-start; gap: 22px; }.social-links { grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, 380px); }
   .register-shell { padding: 124px 0 72px; }.register-grid { grid-template-columns: 1fr; gap: 44px; }.register-intro { position: static; }.registration-form { padding: 24px 18px; }
+  .registration-success-actions { display: grid; }.registration-success-actions .button { width: 100%; }
 }
 @media (max-width: 430px) { .hero-footnote p { line-height: 1.8; }.hero-footnote i { margin: 0 5px 2px; }.wordmark { font-size: 9px; }.wordmark-mark { font-size: 20px; } }
