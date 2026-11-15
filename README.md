@@ -32,6 +32,6 @@ The registration form submits through `app/api/register/route.ts`, which forward
 
 To activate it, add the deployed Apps Script `/exec` URL to `GOOGLE_APPS_SCRIPT_WEB_APP_URL` in `.env.local` locally and in your production host’s encrypted environment variables. The script appends each registration to the `Registrations` sheet tab. Keep the form’s required-field validation and honeypot enabled.
 
-## Contact form
+## Contact
 
-The Contact form does not use the server or Google Apps Script. It opens the visitor's default email app with an enquiry addressed to `Promisewesleyinitiative@gmail.com` and the form details pre-filled. The visitor sends the message from their email app.
+The Contact section has been removed from the public site while PWI confirms the right contact process.

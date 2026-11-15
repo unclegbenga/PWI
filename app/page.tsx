@@ -1,13 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowDownIcon } from "@phosphor-icons/react/dist/csr/ArrowDown";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/csr/ArrowRight";
 import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/csr/ArrowUpRight";
 import { CompassIcon } from "@phosphor-icons/react/dist/csr/Compass";
 import { GraduationCapIcon } from "@phosphor-icons/react/dist/csr/GraduationCap";
-import { SparkleIcon } from "@phosphor-icons/react/dist/csr/Sparkle";
 import { UsersThreeIcon } from "@phosphor-icons/react/dist/csr/UsersThree";
 
 const TIMING = Object.freeze({
@@ -18,7 +17,6 @@ const TIMING = Object.freeze({
 
 export default function Home() {
   const [stage, setStage] = useState(0);
-  const [formMessage, setFormMessage] = useState("");
 
   useEffect(() => {
     const root = document.body;
@@ -45,39 +43,6 @@ export default function Home() {
     document.body.dataset.stage = String(stage);
   }, [stage]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      setFormMessage("Please complete the required fields before sending your enquiry.");
-      return;
-    }
-
-    const formData = new FormData(form);
-    const name = String(formData.get("name") ?? "").trim();
-    const email = String(formData.get("email") ?? "").trim();
-    const interest = String(formData.get("interest") ?? "").trim();
-    const message = String(formData.get("message") ?? "").trim();
-    const subject = `PWI website enquiry from ${name}`;
-    const body = [
-      "Hello PWI,",
-      "",
-      "I would like to get in touch through the PWI website.",
-      "",
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `I am reaching out as: ${interest}`,
-      "",
-      "Message:",
-      message,
-    ].join("\n");
-
-    setFormMessage("Your email app is opening with this enquiry pre-filled. Send the email there to contact PWI.");
-    window.location.href = `mailto:Promisewesleyinitiative@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
-
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>
@@ -93,7 +58,6 @@ export default function Home() {
             <a href="#building">What we&apos;re building</a>
             <a href="#involved">Get involved</a>
             <a className="nav-register" href="/register">Register <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
-            <a className="nav-contact" href="#contact">Contact us <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
           </div>
           <details className="mobile-menu">
             <summary aria-label="Open navigation menu"><span></span><span></span></summary>
@@ -103,7 +67,6 @@ export default function Home() {
               <a href="#building">What we&apos;re building</a>
               <a href="#involved">Get involved</a>
               <a href="/register">Register your interest <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
-              <a href="#contact">Contact us <ArrowUpRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
             </div>
           </details>
         </nav>
@@ -118,10 +81,7 @@ export default function Home() {
               <p className="eyebrow hero-kicker"><span></span> Promise Wesley Initiative</p>
               <h1 className="hero-title">Grow forward,<br /><em>with purpose.</em></h1>
               <p className="hero-intro hero-body">A youth-development initiative building practical pathways for young people to learn, lead, contribute, and move forward with confidence.</p>
-              <div className="hero-actions hero-cta">
-                <a className="button button-gold" href="#contact">Start a conversation <ArrowRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
-                <a className="text-link on-dark" href="#about">Discover PWI <ArrowDownIcon className="inline-icon" aria-hidden="true" weight="bold" /></a>
-              </div>
+              <div className="hero-actions hero-cta"><a className="text-link on-dark" href="#about">Discover PWI <ArrowDownIcon className="inline-icon" aria-hidden="true" weight="bold" /></a></div>
             </div>
             <div className="hero-art" aria-label="Promise Wesley Initiative logo">
               <div className="orbit orbit-outer" aria-hidden="true"></div>
@@ -216,26 +176,10 @@ export default function Home() {
         <section id="involved" className="section involved">
           <div className="container involved-card">
             <div className="involved-copy"><p className="eyebrow eyebrow-dark"><span></span> 03 / Get involved</p><h2>Progress becomes more possible when we move together.</h2></div>
-            <div className="involved-actions"><p>Whether you are a young person looking for direction or someone ready to share knowledge, access, or encouragement, there is room to begin a conversation.</p><a className="button button-dark" href="#contact">Talk to PWI <ArrowRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></a></div>
+            <div className="involved-actions"><p>Whether you are a young person looking for direction or someone ready to share knowledge, access, or encouragement, there is room to begin.</p></div>
           </div>
         </section>
 
-        <section id="contact" className="section contact">
-          <div className="container contact-grid">
-            <div className="contact-intro"><p className="eyebrow"><span></span> 04 / Contact</p><h2>Let’s make the next step visible.</h2><p>Tell us how you would like to connect. Contact routing and direct details will be added when confirmed.</p><div className="contact-note"><SparkleIcon className="inline-icon" aria-hidden="true" weight="fill" /> Contact details coming soon</div></div>
-            <form className="contact-form" onSubmit={handleSubmit} noValidate>
-              <input className="form-honeypot" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-              <div className="form-row">
-                <div className="field"><label htmlFor="name">Your name <b>*</b></label><input id="name" name="name" autoComplete="name" required placeholder="Your name" /></div>
-                <div className="field"><label htmlFor="email">Email address <b>*</b></label><input id="email" name="email" type="email" autoComplete="email" spellCheck={false} required placeholder="you@example.com" /></div>
-              </div>
-              <div className="field"><label htmlFor="interest">I&apos;m reaching out as <b>*</b></label><select id="interest" name="interest" required defaultValue=""><option value="" disabled>Choose one</option><option>Young person</option><option>Mentor or volunteer</option><option>Partner or supporter</option><option>General enquiry</option></select></div>
-              <div className="field"><label htmlFor="message">Your message <b>*</b></label><textarea id="message" name="message" required rows={4} placeholder="Enter your message here"></textarea></div>
-              <p className="form-message" role="status" aria-live="polite">{formMessage}</p>
-              <button className="button button-gold" type="submit">Open email <ArrowRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></button>
-            </form>
-          </div>
-        </section>
       </main>
 
 <footer className="footer"><div className="container footer-inner"><a className="footer-brand" href="#top">Promise Wesley Initiative <span>Grow Forward.</span></a><div className="footer-social" aria-label="Promise Wesley Initiative social links"><p className="footer-label">Find PWI online</p><div className="social-links"><a className="social-link" href="https://linkedin.com/company/promise-wesley-initiative" target="_blank" rel="noreferrer" aria-label="PWI on LinkedIn — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/linkedin/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">LinkedIn</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://www.facebook.com/share/1Khteg1sDc/" target="_blank" rel="noreferrer" aria-label="PWI on Facebook — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/facebook/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">Facebook</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://www.instagram.com/promisewesleyinitiative?exln=emd6NTFmcjA2NDRt" target="_blank" rel="noreferrer" aria-label="PWI on Instagram — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/instagram/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">Instagram</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://www.tiktok.com/@promise.wesley.in?_r=1&amp;_t=ZS-9AkhpwTmJIQ" target="_blank" rel="noreferrer" aria-label="PWI on TikTok — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/tiktok/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">TikTok</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://x.com/PW_Initiative" target="_blank" rel="noreferrer" aria-label="PWI on X — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/x/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">X</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://youtube.com/@promisewesleyinitiative?si=YUbobHiWBoMoceSr" target="_blank" rel="noreferrer" aria-label="PWI on YouTube — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/youtube/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">YouTube</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="https://wa.me/2348022712478" target="_blank" rel="noreferrer" aria-label="Message PWI on WhatsApp — opens in a new tab"><img className="social-icon" src="https://cdn.simpleicons.org/whatsapp/F5A000" alt="" aria-hidden="true" width="15" height="15" /><span className="social-name">WhatsApp</span><span className="social-arrow" aria-hidden="true">↗</span></a><a className="social-link" href="mailto:Promisewesleyinitiative@gmail.com"><svg className="social-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"></rect><path d="m4 7 8 6 8-6"></path></svg><span className="social-name">Email</span><span className="social-arrow" aria-hidden="true">↗</span></a></div></div><p>© {new Date().getFullYear()} PWI.</p></div></footer>
