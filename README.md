@@ -34,4 +34,4 @@ To activate it, add the deployed Apps Script `/exec` URL to `GOOGLE_APPS_SCRIPT_
 
 ## Contact form
 
-The Contact form uses the same Apps Script endpoint to send enquiry notifications to `Promisewesleyinitiative@gmail.com`. The script sends the notification from the Google account that deployed it and sets the visitor's address as Reply-To.
+The Contact form does not use the server or Google Apps Script. It opens the visitor's default email app with an enquiry addressed to `Promisewesleyinitiative@gmail.com` and the form details pre-filled. The visitor sends the message from their email app.

@@ -19,7 +19,6 @@ const TIMING = Object.freeze({
 export default function Home() {
   const [stage, setStage] = useState(0);
   const [formMessage, setFormMessage] = useState("");
-  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     const root = document.body;
@@ -46,7 +45,7 @@ export default function Home() {
     document.body.dataset.stage = String(stage);
   }, [stage]);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
 
@@ -57,31 +56,26 @@ export default function Home() {
     }
 
     const formData = new FormData(form);
-    setIsSending(true);
-    setFormMessage("");
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const interest = String(formData.get("interest") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
+    const subject = `PWI website enquiry from ${name}`;
+    const body = [
+      "Hello PWI,",
+      "",
+      "I would like to get in touch through the PWI website.",
+      "",
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `I am reaching out as: ${interest}`,
+      "",
+      "Message:",
+      message,
+    ].join("\n");
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: String(formData.get("name") ?? ""),
-          email: String(formData.get("email") ?? ""),
-          interest: String(formData.get("interest") ?? ""),
-          message: String(formData.get("message") ?? ""),
-          company: String(formData.get("company") ?? ""),
-        }),
-      });
-      const result = await response.json() as { ok?: boolean; message?: string };
-      if (!response.ok || !result.ok) throw new Error(result.message || "We could not send your enquiry. Please try again.");
-
-      form.reset();
-      setFormMessage("Thank you. Your enquiry has been sent to PWI. We will get back to you soon.");
-    } catch (error) {
-      setFormMessage(error instanceof Error ? error.message : "We could not send your enquiry. Please try again.");
-    } finally {
-      setIsSending(false);
-    }
+    setFormMessage("Your email app is opening with this enquiry pre-filled. Send the email there to contact PWI.");
+    window.location.href = `mailto:Promisewesleyinitiative@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   return (
@@ -238,7 +232,7 @@ export default function Home() {
               <div className="field"><label htmlFor="interest">I&apos;m reaching out as <b>*</b></label><select id="interest" name="interest" required defaultValue=""><option value="" disabled>Choose one</option><option>Young person</option><option>Mentor or volunteer</option><option>Partner or supporter</option><option>General enquiry</option></select></div>
               <div className="field"><label htmlFor="message">Your message <b>*</b></label><textarea id="message" name="message" required rows={4} placeholder="Enter your message here"></textarea></div>
               <p className="form-message" role="status" aria-live="polite">{formMessage}</p>
-              <button className="button button-gold" type="submit" disabled={isSending}>{isSending ? "Sending…" : "Send enquiry"} <ArrowRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></button>
+              <button className="button button-gold" type="submit">Open email <ArrowRightIcon className="inline-icon" aria-hidden="true" weight="bold" /></button>
             </form>
           </div>
         </section>
